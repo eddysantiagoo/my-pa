@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
+import { Plus, ArrowRightLeft, Check, X, Eye } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -9,9 +11,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Plus, ArrowRightLeft, Check, X, Eye } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { WarehouseTransfer } from '@/types/transfer';
-import { Badge } from '@/components/ui/badge';
 
 interface TransferIndexPageProps {
     transfers: {
@@ -24,13 +25,13 @@ export default function TransferIndex({ transfers }: TransferIndexPageProps) {
 
     const handleConfirm = (transfer: WarehouseTransfer) => {
         if (confirm('¿Confirmar transferencia y mover stock? Esta acción no se puede deshacer.')) {
-            router.post(route('transfers.confirm', transfer.id));
+            router.post(`/inventory/transfers/${transfer.id}/confirm`);
         }
     };
 
     const handleCancel = (transfer: WarehouseTransfer) => {
         if (confirm('¿Cancelar esta transferencia?')) {
-            router.post(route('transfers.cancel', transfer.id));
+            router.post(`/inventory/transfers/${transfer.id}/cancel`);
         }
     };
 
@@ -56,7 +57,7 @@ export default function TransferIndex({ transfers }: TransferIndexPageProps) {
                         <h1 className="text-2xl font-bold text-foreground">Transferencias entre Bodegas</h1>
                     </div>
                     <Button asChild className="bg-primary hover:bg-primary/90">
-                        <Link href={route('transfers.create')}>
+                        <Link href="/inventory/transfers/create">
                             <Plus className="mr-2 h-4 w-4" />
                             Nueva Transferencia
                         </Link>

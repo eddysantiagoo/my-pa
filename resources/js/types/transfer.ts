@@ -1,6 +1,6 @@
+import { User } from './adjustment';
 import { Product } from './product';
 import { Warehouse } from './warehouse';
-import { User } from './adjustment';
 
 export interface WarehouseTransferItem {
     id: number;

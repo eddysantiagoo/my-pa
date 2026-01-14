@@ -8,6 +8,14 @@ import {
 import { useCallback, useState, useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -16,20 +24,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Checkbox } from "@/components/ui/checkbox";
 import AppLayout from '@/layouts/app-layout';
-import { ProductTable } from './Components/ProductTable';
+import { index, create, bulkDestroy, destroy, barcode } from '@/routes/products';
 import { Product, ProductPageProps } from '@/types/product';
+
 import { EquivalencesModal } from './Components/EquivalencesModal';
 import { ImagesModal } from './Components/ImagesModal';
-import { index, create, bulkDestroy, destroy, barcode } from '@/routes/products';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { ProductTable } from './Components/ProductTable';
+
 
 export default function ProductsIndex({
     products,

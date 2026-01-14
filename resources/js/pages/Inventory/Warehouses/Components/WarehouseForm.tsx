@@ -1,5 +1,8 @@
-import { useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -7,13 +10,13 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { InputError } from '@/components/ui/input-error'; // Assuming this exists or I'll use simple text
-import { Warehouse } from '@/types/warehouse';
 import { store, update } from '@/routes/warehouses';
+import { Warehouse } from '@/types/warehouse';
+
+import { InputError } from '@/components/ui/input-error'; // Assuming this exists or I'll use simple text
+
 
 interface WarehouseFormProps {
     open: boolean;

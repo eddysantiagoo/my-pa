@@ -1,5 +1,10 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { Eye, Pencil, Trash2, Plus } from 'lucide-react';
+import { useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
     Table,
@@ -10,10 +15,6 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Eye, Pencil, Trash2, Plus } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { banks } from '@/routes';
 
 interface BankAccount {
     id: number;
@@ -35,7 +36,6 @@ interface Props {
     };
 }
 
-import { useState } from 'react';
 
 function BalanceRevealer({ balance }: { balance: string }) {
     const [show, setShow] = useState(false);
@@ -56,14 +56,14 @@ function BalanceRevealer({ balance }: { balance: string }) {
 export default function BankIndex({ accounts, filters }: Props) {
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         router.get(
-            banks.index().url,
+            '/banks',
             { search: e.target.value },
             { preserveState: true, replace: true }
         );
     };
 
     return (
-        <AppLayout breadcrumbs={[{ title: 'Bancos', href: banks.index().url }]}>
+        <AppLayout breadcrumbs={[{ title: 'Bancos', href: '/banks' }]}>
             <Head title="Bancos" />
 
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
@@ -71,7 +71,7 @@ export default function BankIndex({ accounts, filters }: Props) {
                     <div className="flex items-center gap-2">
                         <h1 className="text-2xl font-bold tracking-tight">Bancos</h1>
                     </div>
-                    <Link href={banks.create().url}>
+                    <Link href="/banks/create">
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Nuevo Banco
@@ -117,12 +117,12 @@ export default function BankIndex({ accounts, filters }: Props) {
                                         <TableCell className="text-right">
                                             <div className="flex justify-end gap-2">
                                                 <BalanceRevealer balance={account.initial_balance} />
-                                                <Link href={banks.transactions.index(account.id).url}>
+                                                <Link href={`/banks/${account.id}/transactions`}>
                                                     <Button variant="outline" size="icon" className="h-8 w-8 text-green-600 border-green-600 hover:bg-green-50">
                                                         <Eye className="h-4 w-4" />
                                                     </Button>
                                                 </Link>
-                                                <Link href={banks.edit(account.id).url}>
+                                                <Link href={`/banks/${account.id}/edit`}>
                                                     <Button variant="outline" size="icon" className="h-8 w-8 text-green-600 border-green-600 hover:bg-green-50">
                                                         <Pencil className="h-4 w-4" />
                                                     </Button>

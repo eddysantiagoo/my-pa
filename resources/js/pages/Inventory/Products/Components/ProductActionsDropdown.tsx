@@ -1,3 +1,6 @@
+import { router } from "@inertiajs/react";
+import { MoreHorizontal, Eye, Edit, Ban, CheckCircle, Trash2, Printer, ArrowRightLeft, Image } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -7,10 +10,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye, Edit, Ban, CheckCircle, Trash2, Printer, ArrowRightLeft, Image } from "lucide-react";
-import { Product } from "@/types/product";
-import { router } from "@inertiajs/react";
 import { update, show, edit } from '@/routes/products';
+import { Product } from "@/types/product";
+
+
 
 interface ProductActionsDropdownProps {
     product: Product;

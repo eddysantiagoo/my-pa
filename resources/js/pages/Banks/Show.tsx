@@ -1,5 +1,15 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Minus, ArrowRightLeft, ChevronDown } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
     Table,
@@ -10,16 +20,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Minus, ArrowRightLeft, ChevronDown } from 'lucide-react';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { banks } from '@/routes';
+
+
 
 interface BankAccount {
     id: number;
@@ -56,7 +58,7 @@ interface Props {
 export default function BankShow({ bank, transactions, filters }: Props) {
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         router.get(
-            banks.transactions.index(bank.id).url,
+            `/banks/${bank.id}/transactions`,
             { search: e.target.value },
             { preserveState: true, replace: true }
         );
@@ -67,7 +69,7 @@ export default function BankShow({ bank, transactions, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={[
-            { title: 'Bancos', href: banks.index().url },
+            { title: 'Bancos', href: '/banks' },
             { title: bank.name, href: '#' }
         ]}>
             <Head title={`Banco - ${bank.name}`} />

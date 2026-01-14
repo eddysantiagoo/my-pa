@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'index'])->name('banks.transactions.index');
     Route::post('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'store'])->name('banks.transactions.store');
 
+    Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
+
     // Configuration Routes
     Route::get('/configuration', [\App\Http\Controllers\ConfigurationController::class, 'index'])->name('configuration.index');
     Route::post('/configuration/{module}', [\App\Http\Controllers\ConfigurationController::class, 'update'])->name('configuration.update');

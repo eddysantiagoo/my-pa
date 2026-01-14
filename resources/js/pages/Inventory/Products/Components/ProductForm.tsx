@@ -1,8 +1,17 @@
+import { useForm } from '@inertiajs/react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { FormEventHandler, useState, useMemo } from 'react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
 import {
     Select,
     SelectContent,
@@ -10,19 +19,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { Product, Brand, Category, Tag } from '@/types/product';
-import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useState, useMemo } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { update, store } from '@/routes/products';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Product, Brand, Category, Tag } from '@/types/product';
 import { formatCurrency, formatPercentage } from '@/utils/format';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface ProductFormProps {
     product?: Product; // If provided, it's Edit mode

@@ -1,5 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
+import { Plus, History, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -9,10 +11,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Plus, History, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { InventoryAdjustment } from '@/types/adjustment';
 import { PageProps } from '@/types/warehouse';
-import { Badge } from '@/components/ui/badge';
 
 interface AdjustmentIndexPageProps {
     adjustments: {
@@ -35,7 +36,7 @@ export default function AdjustmentIndex({ adjustments }: AdjustmentIndexPageProp
                         <h1 className="text-2xl font-bold text-foreground">Ajustes de Inventario</h1>
                     </div>
                     <Button asChild className="bg-primary hover:bg-primary/90">
-                        <Link href={route('adjustments.create')}>
+                        <Link href="/inventory/adjustments/create">
                             <Plus className="mr-2 h-4 w-4" />
                             Nuevo Ajuste
                         </Link>

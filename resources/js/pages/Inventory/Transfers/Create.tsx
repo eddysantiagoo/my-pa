@@ -1,6 +1,7 @@
 import { Head, useForm, Link } from '@inertiajs/react';
+import { Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +13,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Trash2, Plus } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { Product } from '@/types/product';
 import { Warehouse } from '@/types/warehouse';
 
@@ -49,7 +50,7 @@ export default function TransferCreate({ products, warehouses }: TransferCreateP
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('transfers.store'));
+        post('/inventory/transfers');
     };
 
     return (
@@ -172,7 +173,7 @@ export default function TransferCreate({ products, warehouses }: TransferCreateP
 
                     <div className="flex justify-end gap-3">
                         <Button variant="outline" type="button" asChild>
-                            <Link href={route('transfers.index')}>Cancelar</Link>
+                            <Link href="/inventory/transfers">Cancelar</Link>
                         </Button>
                         <Button type="submit" disabled={processing} className="min-w-[120px]">
                             {processing ? 'Crear Solicitud' : 'Crear Solicitud'}
