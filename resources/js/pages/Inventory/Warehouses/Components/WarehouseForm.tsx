@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { InputError } from '@/components/ui/input-error'; // Assuming this exists or I'll use simple text
 import { Warehouse } from '@/types/warehouse';
+import { store, update } from '@/routes/warehouses';
 
 interface WarehouseFormProps {
     open: boolean;
@@ -48,14 +49,14 @@ export function WarehouseForm({ open, onClose, warehouse }: WarehouseFormProps) 
         e.preventDefault();
 
         if (warehouse) {
-            put(route('warehouses.update', warehouse.id), {
+            put(update.url({ warehouse: warehouse.id }), {
                 onSuccess: () => {
                     reset();
                     onClose();
                 },
             });
         } else {
-            post(route('warehouses.store'), {
+            post(store.url(), {
                 onSuccess: () => {
                     reset();
                     onClose();
