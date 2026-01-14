@@ -11,13 +11,14 @@ class PriceList extends Model
         'code',
         'name',
         'description',
-        'markup_percentage',
+        'type',        // base, percentage, fixed
+        'percentage',  // for derived lists
         'is_default',
         'is_active',
     ];
 
     protected $casts = [
-        'markup_percentage' => 'decimal:2',
+        'percentage' => 'decimal:2',
         'is_default' => 'boolean',
         'is_active' => 'boolean',
     ];

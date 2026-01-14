@@ -62,6 +62,16 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(InventoryTransaction::class);
+    }
+
     public function priceListItems(): HasMany
     {
         // Assumes reference maps to inventory_code

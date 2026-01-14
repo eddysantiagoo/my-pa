@@ -14,7 +14,11 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('markup_percentage', 5, 2)->default(0);  // % sobre costo
+            
+            // New fields for derived lists
+            $table->enum('type', ['base', 'percentage', 'fixed'])->default('base');
+            $table->decimal('percentage', 5, 2)->default(0)->comment('Margin or discount');
+            
             $table->boolean('is_default')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
