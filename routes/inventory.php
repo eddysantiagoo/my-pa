@@ -21,4 +21,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('inventory/transfers/{transfer}/confirm', [\App\Http\Controllers\Inventory\WarehouseTransferController::class, 'confirm'])->name('transfers.confirm');
     Route::post('inventory/transfers/{transfer}/cancel', [\App\Http\Controllers\Inventory\WarehouseTransferController::class, 'cancel'])->name('transfers.cancel');
     Route::resource('inventory/transfers', \App\Http\Controllers\Inventory\WarehouseTransferController::class)->only(['index', 'create', 'store']);
+
+    // Brands
+    Route::get('inventory/brands-list', [\App\Http\Controllers\Inventory\BrandController::class, 'list'])->name('brands.list'); // For Selects
+    Route::resource('inventory/brands', \App\Http\Controllers\Inventory\BrandController::class); // For Management CRUD
+
+    // Categories
+    Route::get('inventory/categories-list', [\App\Http\Controllers\Inventory\CategoryController::class, 'list'])->name('categories.list');
+    Route::resource('inventory/categories', \App\Http\Controllers\Inventory\CategoryController::class);
+
+    // Applications
+    Route::get('inventory/applications-list', [\App\Http\Controllers\Inventory\ApplicationController::class, 'list'])->name('applications.list');
+    Route::resource('inventory/applications', \App\Http\Controllers\Inventory\ApplicationController::class);
 });

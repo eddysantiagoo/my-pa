@@ -25,10 +25,25 @@ class StoreProductRequest extends FormRequest
             'is_public' => ['boolean'],
             'is_inventariable' => ['boolean'],
             'is_rotative' => ['boolean'],
-            
-            // Note: Purchase price and Price might come from price lists, but keeping base here
             'purchase_price' => ['nullable', 'numeric', 'min:0'],
             'price' => ['nullable', 'numeric', 'min:0'],
+            'unit_of_measure' => ['nullable', 'string', 'max:50'],
+            'stock' => ['nullable', 'numeric', 'min:0'],
+            'stock_min' => ['nullable', 'integer', 'min:0'],
+            'stock_max' => ['nullable', 'integer', 'min:0'],
+
+            // Complex fields
+            'aliases' => ['nullable', 'array'],
+            'aliases.*.alias' => ['required', 'string', 'max:255'],
+            'aliases.*.description' => ['nullable', 'string'],
+            'aliases.*.is_main' => ['boolean'],
+
+            'applications' => ['nullable', 'array'],
+            'applications.*' => ['exists:applications,id'],
+
+            'storage_locations' => ['nullable', 'array'],
+            'storage_locations.*.warehouse_id' => ['required', 'exists:warehouses,id'],
+            'storage_locations.*.location_name' => ['required', 'string', 'max:255'],
         ];
     }
 }

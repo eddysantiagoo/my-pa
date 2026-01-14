@@ -1,6 +1,8 @@
 import { useForm } from '@inertiajs/react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { FormEventHandler, useState, useMemo } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,18 +24,26 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { update, store } from '@/routes/products';
-import { Product, Brand, Category, Tag } from '@/types/product';
+import { Product, Brand, Category, Tag, Application, ProductAlias, StorageLocation } from '@/types/product';
+import { Warehouse } from '@/types/warehouse';
 import { formatCurrency, formatPercentage } from '@/utils/format';
+import { AliasManager } from '@/components/AliasManager';
+import { LocationManager } from '@/components/LocationManager';
+import { TreeSelect } from '@/components/TreeSelect';
+import { CreatableSelect } from '@/components/CreatableSelect';
 
 interface ProductFormProps {
     product?: Product; // If provided, it's Edit mode
     brands: Brand[];
     categories: Category[];
+    applications: Application[];
+    warehouses: Warehouse[];
     tags: Tag[];
     cancelHref: string;
 }
 
-export function ProductForm({ product, brands, categories, tags, cancelHref }: ProductFormProps) {
+export function ProductForm({ product, brands: initialBrands, categories, applications, warehouses, tags, cancelHref }: ProductFormProps) {
+    const [brands, setBrands] = useState<Brand[]>(initialBrands);
     const [isGeneralOpen, setIsGeneralOpen] = useState(true);
     const [isCommercialOpen, setIsCommercialOpen] = useState(true);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -51,8 +61,14 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
         is_inventariable: boolean;
         is_rotative: boolean;
         is_public: boolean;
-        quantity: number;
+
+        stock: number;
         unit_of_measure: string;
+        aliases: ProductAlias[];
+        applications: number[];
+        storage_locations: StorageLocation[];
+        stock_min: number;
+        stock_max: number;
     }>({
         name: product?.name ?? '',
         reference: product?.reference ?? '',
@@ -65,8 +81,13 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
         is_inventariable: product?.is_inventariable ?? true,
         is_rotative: product?.is_rotative ?? false,
         is_public: product?.is_public ?? false,
-        quantity: 1,
-        unit_of_measure: '',
+        stock: 1,
+        unit_of_measure: product?.unit_of_measure ?? '',
+        aliases: product?.aliases ?? [],
+        applications: product?.applications?.map(a => a.id) ?? [],
+        storage_locations: product?.storage_locations ?? [],
+        stock_min: 0,
+        stock_max: 0,
     });
 
     // Calcular total con impuesto
@@ -86,6 +107,20 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
     const parseCurrencyInput = (value: string): number => {
         const cleaned = value.replace(/[^0-9.]/g, '');
         return parseFloat(cleaned) || 0;
+    };
+
+    const handleCreateBrand = async (name: string) => {
+        try {
+            const response = await axios.post(route('brands.store'), { name }, {
+                headers: { 'Accept': 'application/json' }
+            });
+            const newBrand = response.data;
+            setBrands([...brands, newBrand]);
+            return { id: newBrand.id, name: newBrand.name };
+        } catch (error) {
+            console.error(error);
+            toast.error('Error al crear la marca');
+        }
     };
 
     const submit: FormEventHandler = (e) => {
@@ -118,6 +153,11 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
                             is_public: false,
                             quantity: 1,
                             unit_of_measure: '',
+                            aliases: [],
+                            applications: [],
+                            storage_locations: [],
+                            stock_min: 0,
+                            stock_max: 0,
                         });
                     } else {
                         window.location.href = cancelHref;
@@ -128,7 +168,7 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
     };
 
     const selectedBrand = brands.find(b => String(b.id) === data.brand_id);
-    const selectedCategory = categories.find(c => String(c.id) === data.category_id);
+    // const selectedCategory = categories.find(c => String(c.id) === data.category_id); // Unused
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -184,12 +224,20 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="quantity">Cantidad</Label>
+                                        <AliasManager
+                                            aliases={data.aliases}
+                                            onChange={(val) => setData('aliases', val)}
+                                            error={errors.aliases as unknown as string}
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="stock">Cantidad / Stock</Label>
                                         <Input
-                                            id="quantity"
+                                            id="stock"
                                             type="number"
-                                            value={data.quantity}
-                                            onChange={(e) => setData('quantity', Number(e.target.value))}
+                                            value={data.stock}
+                                            onChange={(e) => setData('stock', Number(e.target.value))}
                                             className="bg-background"
                                         />
                                     </div>
@@ -207,18 +255,13 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
 
                                     <div className="space-y-2">
                                         <Label htmlFor="brand_id">Marca</Label>
-                                        <Select value={data.brand_id} onValueChange={(v) => setData('brand_id', v)}>
-                                            <SelectTrigger className="bg-background">
-                                                <SelectValue placeholder="Asignar marca" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {brands.map((brand) => (
-                                                    <SelectItem key={brand.id} value={String(brand.id)}>
-                                                        {brand.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                        <CreatableSelect
+                                            options={brands.map(b => ({ id: b.id, name: b.name }))}
+                                            value={data.brand_id}
+                                            onChange={(opt) => setData('brand_id', String(opt.id))}
+                                            onCreate={handleCreateBrand}
+                                            placeholder="Seleccionar o crear marca"
+                                        />
                                     </div>
 
                                     <div className="space-y-2">
@@ -235,6 +278,8 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
                                                 <SelectItem value="ml">Mililitro</SelectItem>
                                                 <SelectItem value="m">Metro</SelectItem>
                                                 <SelectItem value="cm">Centímetro</SelectItem>
+                                                <SelectItem value="caja">Caja</SelectItem>
+                                                <SelectItem value="paquete">Paquete</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -250,9 +295,33 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
                                         </Label>
                                     </div>
                                     {data.is_inventariable && (
-                                        <p className="text-sm text-muted-foreground">
-                                            Mantén activada esta opción para llevar el control de costos y cantidades
-                                        </p>
+                                        <div className="pt-4 space-y-4 border-t border-border">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="stock_min">Stock Mínimo</Label>
+                                                    <Input
+                                                        id="stock_min"
+                                                        type="number"
+                                                        value={data.stock_min}
+                                                        onChange={(e) => setData('stock_min', Number(e.target.value))}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="stock_max">Stock Máximo</Label>
+                                                    <Input
+                                                        id="stock_max"
+                                                        type="number"
+                                                        value={data.stock_max}
+                                                        onChange={(e) => setData('stock_max', Number(e.target.value))}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <LocationManager
+                                                value={data.storage_locations}
+                                                onChange={(val) => setData('storage_locations', val)}
+                                                warehouses={warehouses}
+                                            />
+                                        </div>
                                     )}
                                 </CardContent>
                             </CollapsibleContent>
@@ -371,18 +440,23 @@ export function ProductForm({ product, brands, categories, tags, cancelHref }: P
                                 <CardContent className="p-4 space-y-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="category_id">Categoria</Label>
-                                        <Select value={data.category_id} onValueChange={(v) => setData('category_id', v)}>
-                                            <SelectTrigger className="bg-background">
-                                                <SelectValue placeholder="Seleccione" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {categories.map((cat) => (
-                                                    <SelectItem key={cat.id} value={String(cat.id)}>
-                                                        {cat.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                        <TreeSelect
+                                            data={categories}
+                                            value={data.category_id ? Number(data.category_id) : undefined}
+                                            onChange={(val) => setData('category_id', String(val))}
+                                            placeholder="Seleccionar categoría"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="applications">Aplicaciones / Modelos</Label>
+                                        <TreeSelect
+                                            data={applications}
+                                            value={data.applications}
+                                            onChange={(val) => setData('applications', Array.isArray(val) ? val : [val])}
+                                            placeholder="Seleccionar aplicaciones"
+                                            multiple
+                                        />
                                     </div>
 
                                     <div className="space-y-2">

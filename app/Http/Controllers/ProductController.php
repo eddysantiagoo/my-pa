@@ -51,8 +51,10 @@ class ProductController extends Controller
     public function create()
     {
         return Inertia::render('Inventory/Products/Create', [
-            'brands' => Brand::all(),
-            'categories' => Category::all(),
+            'brands' => Brand::orderBy('name')->get(),
+            'categories' => Category::with('children')->whereNull('parent_id')->orderBy('name')->get(),
+            'applications' => \App\Models\Application::with('children')->whereNull('parent_id')->orderBy('name')->get(),
+            'warehouses' => \App\Models\Warehouse::where('is_active', true)->get(),
             'tags' => Tag::all(),
         ]);
     }
@@ -78,12 +80,14 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['tags']);
+        $product->load(['tags', 'aliases', 'applications', 'storageLocations']);
         
         return Inertia::render('Inventory/Products/Edit', [
             'product' => $product,
-            'brands' => Brand::all(),
-            'categories' => Category::all(),
+            'brands' => Brand::orderBy('name')->get(),
+            'categories' => Category::with('children')->whereNull('parent_id')->orderBy('name')->get(),
+            'applications' => \App\Models\Application::with('children')->whereNull('parent_id')->orderBy('name')->get(),
+            'warehouses' => \App\Models\Warehouse::where('is_active', true)->get(),
             'tags' => Tag::all(),
         ]);
     }

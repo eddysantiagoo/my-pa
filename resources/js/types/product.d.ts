@@ -9,6 +9,32 @@ export interface Category {
     name: string;
     slug: string;
     parent_id?: number;
+    children?: Category[];
+}
+
+export interface Application {
+    id: number;
+    name: string;
+    slug: string;
+    parent_id?: number;
+    children?: Application[];
+}
+
+export interface ProductAlias {
+    id?: number;
+    alias: string;
+    description: string;
+    is_main: boolean;
+}
+
+export interface StorageLocation {
+    id?: number;
+    warehouse_id: number;
+    location_name: string;
+    warehouse?: {
+        id: number;
+        name: string;
+    };
 }
 
 export interface Tag {
@@ -39,6 +65,12 @@ export interface Product {
     is_inventariable: boolean;
     is_rotative: boolean;
     main_image_path?: string;
+
+    // Relations
+    aliases?: ProductAlias[];
+    applications?: Application[];
+    storage_locations?: StorageLocation[];
+
     created_at: string;
     updated_at: string;
     deleted_at?: string;

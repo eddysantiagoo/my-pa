@@ -22,6 +22,7 @@ class Product extends Model
         'price',
         'tax_rate',
         'stock',
+        'unit_of_measure', // New
         'is_active',
         'is_public',
         'is_inventariable',
@@ -41,6 +42,21 @@ class Product extends Model
     ];
 
     // Relationships
+
+    public function aliases(): HasMany
+    {
+        return $this->hasMany(ProductAlias::class);
+    }
+
+    public function applications(): BelongsToMany
+    {
+        return $this->belongsToMany(Application::class);
+    }
+
+    public function storageLocations(): HasMany
+    {
+        return $this->hasMany(ProductStorageLocation::class);
+    }
 
     public function brand(): BelongsTo
     {

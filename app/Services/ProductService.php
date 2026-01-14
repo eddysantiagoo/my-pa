@@ -26,14 +26,81 @@ class ProductService
                 ]);
             }
 
+            // Handle Aliases
+            if (isset($data['aliases']) && is_array($data['aliases'])) {
+                foreach ($data['aliases'] as $aliasData) {
+                    if (!empty($aliasData['alias'])) {
+                        $product->aliases()->create([
+                            'alias' => $aliasData['alias'],
+                            'description' => $aliasData['description'] ?? null,
+                            'is_main' => $aliasData['is_main'] ?? false,
+                        ]);
+                    }
+                }
+            }
+
+            // Handle Applications (Sync IDs)
+            if (isset($data['applications']) && is_array($data['applications'])) {
+                $product->applications()->sync($data['applications']);
+            }
+
+            // Handle Storage Locations
+            if (isset($data['storage_locations']) && is_array($data['storage_locations'])) {
+                foreach ($data['storage_locations'] as $loc) {
+                    if (!empty($loc['warehouse_id']) && !empty($loc['location_name'])) {
+                        $product->storageLocations()->create([
+                            'warehouse_id' => $loc['warehouse_id'],
+                            'location_name' => $loc['location_name'],
+                        ]);
+                    }
+                }
+            }
+
             return $product;
         });
     }
 
     public function updateProduct(Product $product, array $data): Product
     {
-        $product->update($data);
-        return $product;
+        return DB::transaction(function () use ($product, $data) {
+            $product->update($data);
+
+            // Sync Aliases (Delete all and recreate is simplest for now, or sophisticated sync)
+            // For now, let's look for IDs to update, or wipe and replace. 
+            // Wipe and replace is safer for "edit all" UI.
+            if (isset($data['aliases'])) {
+                $product->aliases()->delete();
+                foreach ($data['aliases'] as $aliasData) {
+                    if (!empty($aliasData['alias'])) {
+                        $product->aliases()->create([
+                            'alias' => $aliasData['alias'],
+                            'description' => $aliasData['description'] ?? null,
+                            'is_main' => $aliasData['is_main'] ?? false,
+                        ]);
+                    }
+                }
+            }
+
+            // Sync Applications
+            if (isset($data['applications'])) {
+                $product->applications()->sync($data['applications']);
+            }
+
+            // Sync Storage Locations
+            if (isset($data['storage_locations'])) {
+                $product->storageLocations()->delete();
+                 foreach ($data['storage_locations'] as $loc) {
+                    if (!empty($loc['warehouse_id']) && !empty($loc['location_name'])) {
+                        $product->storageLocations()->create([
+                            'warehouse_id' => $loc['warehouse_id'],
+                            'location_name' => $loc['location_name'],
+                        ]);
+                    }
+                }
+            }
+
+            return $product;
+        });
     }
 
     public function deleteProduct(Product $product): void
