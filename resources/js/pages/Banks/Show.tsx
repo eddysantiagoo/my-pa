@@ -33,7 +33,8 @@ interface Transaction {
     id: number;
     transaction_date: string;
     description: string | null;
-    beneficiary: string | null; // Assuming description is often used as beneficiary or we add a field
+    beneficiary: string | null;
+    booking_text?: string | null; // Optional field for booking text
     category: string | null;
     amount: string;
     type: 'income' | 'expense';
@@ -75,13 +76,13 @@ export default function BankShow({ bank, transactions, filters }: Props) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <h1 className="text-2xl font-bold tracking-tight">Banco</h1>
-                        <Badge variant="secondary" className="text-lg px-3 py-1 bg-gray-200 text-gray-800">
+                        <Badge variant="secondary" className="text-lg px-3 py-1">
                             {bank.name}
                         </Badge>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm border">
+                <div className="flex items-center justify-between bg-card p-4 rounded-lg shadow-sm border border-border">
                     <div className="flex gap-2">
                         <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
                             <Plus className="mr-2 h-4 w-4" /> Agregar Dinero
@@ -109,10 +110,10 @@ export default function BankShow({ bank, transactions, filters }: Props) {
                         <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
                             Ir a Pagos
                         </Button>
-                        <div className="border px-4 py-2 rounded flex gap-2 items-center bg-white">
-                            <span className="font-bold text-gray-600">Saldo</span>
+                        <div className="border border-border px-4 py-2 rounded flex gap-2 items-center bg-card">
+                            <span className="font-bold text-muted-foreground">Saldo</span>
                             {/* Display formatted balance */}
-                            <span className={`font-bold text-lg ${parseFloat(bank.initial_balance) >= 0 ? 'text-red-500' : 'text-red-500'}`}>
+                            <span className={`font-bold text-lg ${parseFloat(bank.initial_balance) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                                 ${new Intl.NumberFormat('es-CO').format(parseFloat(bank.initial_balance))}
                             </span>
                         </div>
@@ -138,15 +139,15 @@ export default function BankShow({ bank, transactions, filters }: Props) {
                 <Card>
                     <CardContent className="p-0">
                         <Table>
-                            <TableHeader className="bg-indigo-950 hover:bg-indigo-950">
+                            <TableHeader className="bg-muted">
                                 <TableRow>
-                                    <TableHead className="text-white">Fecha</TableHead>
-                                    <TableHead className="text-white">Beneficiario</TableHead>
-                                    <TableHead className="text-white">Conciliado</TableHead>
-                                    <TableHead className="text-white">Categoría</TableHead>
-                                    <TableHead className="text-white">Estado</TableHead>
-                                    <TableHead className="text-white">Salida</TableHead>
-                                    <TableHead className="text-white">Entrada</TableHead>
+                                    <TableHead>Fecha</TableHead>
+                                    <TableHead>Beneficiario</TableHead>
+                                    <TableHead>Conciliado</TableHead>
+                                    <TableHead>Categoría</TableHead>
+                                    <TableHead>Estado</TableHead>
+                                    <TableHead>Salida</TableHead>
+                                    <TableHead>Entrada</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -154,7 +155,7 @@ export default function BankShow({ bank, transactions, filters }: Props) {
                                     <TableRow key={tx.id}>
                                         <TableCell className="font-medium">
                                             <div className="flex items-center gap-2">
-                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-full bg-indigo-900 text-white text-xs">
+                                                <Button size="icon" variant="ghost" className="h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs hover:bg-primary/90">
                                                     +
                                                 </Button>
                                                 {tx.transaction_date}
@@ -190,9 +191,9 @@ export default function BankShow({ bank, transactions, filters }: Props) {
                     </span>
                     {/* Add Pagination Links Here if needed */}
                     <div className="flex gap-1">
-                        <Button variant="outline" size="sm" className="bg-indigo-900 text-white hover:bg-indigo-800">Anterior</Button>
-                        <Button variant="secondary" size="sm" className="bg-gray-300">1</Button>
-                        <Button variant="outline" size="sm" className="bg-indigo-900 text-white hover:bg-indigo-800">Siguiente</Button>
+                        <Button variant="outline" size="sm">Anterior</Button>
+                        <Button variant="secondary" size="sm">1</Button>
+                        <Button variant="outline" size="sm">Siguiente</Button>
                     </div>
                 </div>
             </div>
