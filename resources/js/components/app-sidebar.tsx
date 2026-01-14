@@ -13,7 +13,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { banks, contacts, dashboard } from '@/routes';
+import { dashboard } from '@/routes';
+import { index as contacts } from '@/routes/contacts';
+import banks from '@/routes/banks';
 import { type NavItem } from '@/types';
 
 import AppLogo from './app-logo';
