@@ -87,19 +87,21 @@ class Contact extends Model
     }
 
     /**
-     * Scope for customers only.
+     * Scope for customers only (excludes contacts that are also suppliers).
      */
     public function scopeCustomers($query)
     {
-        return $query->where('is_customer', true);
+        return $query->where('is_customer', true)
+            ->where('is_supplier', false);
     }
 
     /**
-     * Scope for suppliers only.
+     * Scope for suppliers only (excludes contacts that are also customers).
      */
     public function scopeSuppliers($query)
     {
-        return $query->where('is_supplier', true);
+        return $query->where('is_supplier', true)
+            ->where('is_customer', false);
     }
 
     /**
