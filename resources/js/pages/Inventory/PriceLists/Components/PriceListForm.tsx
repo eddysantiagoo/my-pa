@@ -138,8 +138,9 @@ export function PriceListForm({ open, onClose, priceList }: PriceListFormProps) 
                                     id="percentage"
                                     type="number"
                                     step="0.01"
-                                    value={data.percentage}
-                                    onChange={(e) => setData('percentage', parseFloat(e.target.value))}
+                                    min="0"
+                                    value={data.percentage || ''}
+                                    onChange={(e) => setData('percentage', e.target.value ? parseFloat(e.target.value) : 0)}
                                     className="pr-8"
                                     required
                                 />

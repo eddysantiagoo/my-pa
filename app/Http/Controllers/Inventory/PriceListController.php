@@ -21,6 +21,7 @@ class PriceListController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:50|unique:price_lists,code',
+            'description' => 'nullable|string|max:500',
             'type' => 'required|in:base,percentage,fixed',
             'percentage' => 'nullable|numeric|min:0',
             'is_default' => 'boolean',
@@ -41,6 +42,7 @@ class PriceListController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:50|unique:price_lists,code,' . $priceList->id,
+            'description' => 'nullable|string|max:500',
             'type' => 'required|in:base,percentage,fixed',
             'percentage' => 'nullable|numeric|min:0',
             'is_default' => 'boolean',
