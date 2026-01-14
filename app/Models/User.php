@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -48,5 +50,55 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the roles for the user.
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
+    }
+
+    /**
+     * Get contacts where this user is the seller.
+     */
+    public function assignedContacts(): HasMany
+    {
+        return $this->hasMany(Contact::class, 'seller_id');
+    }
+
+    /**
+     * Check if user has a specific role by code.
+     */
+    public function hasRole(string $roleCode): bool
+    {
+        return $this->roles()
+            ->whereHas('roleType', fn ($q) => $q->where('code', $roleCode))
+            ->exists();
+    }
+
+    /**
+     * Check if user has a specific permission.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        return $this->roles->contains(fn ($role) => $role->hasPermission($permission));
+    }
+
+    /**
+     * Check if user is a seller.
+     */
+    public function isSeller(): bool
+    {
+        return $this->hasRole('SELLER');
+    }
+
+    /**
+     * Check if user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('ADMIN');
     }
 }
