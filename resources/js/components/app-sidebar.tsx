@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, Landmark, LayoutGrid, Package, ShoppingCart, Truck, Users } from 'lucide-react';
+import { BookOpen, Folder, Landmark, LayoutGrid, Package, ReceiptText, ShoppingCart, Truck, Users } from 'lucide-react';
 
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -21,6 +21,7 @@ import { index as warehousesIndex } from '@/routes/warehouses';
 import { index as priceListsIndex } from '@/routes/price-lists';
 import { index as adjustmentsIndex } from '@/routes/adjustments';
 import { index as transfersIndex } from '@/routes/transfers';
+import vouchers from '@/routes/vouchers';
 import { type NavItem } from '@/types';
 
 import AppLogo from './app-logo';
@@ -75,6 +76,22 @@ const mainNavItems: NavItem[] = [
                 title: 'Transferencias de bodegas',
                 href: transfersIndex(),
                 icon: Package,
+            },
+        ],
+    },
+    {
+        title: 'Comprobantes',
+        icon: ReceiptText,
+        items: [
+            {
+                title: 'Todos los comprobantes',
+                href: vouchers.index(),
+                icon: ReceiptText,
+            },
+            {
+                title: 'Nuevo comprobante',
+                href: vouchers.create(),
+                icon: ReceiptText,
             },
         ],
     },

@@ -1,10 +1,10 @@
 import { Head } from '@inertiajs/react';
+import { FilePlus2 } from 'lucide-react';
 
-import AppLayout from '@/Layouts/app-layout';
+import AppLayout from '@/layouts/app-layout';
 import vouchers from '@/routes/vouchers';
 
 import VoucherForm from './VoucherForm';
-
 
 export default function Create() {
     const breadcrumbs = [
@@ -13,22 +13,28 @@ export default function Create() {
     ];
 
     return (
-        <AppLayout
-            breadcrumbs={breadcrumbs}
-        >
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Crear Comprobante" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                        <div className="mb-6">
-                            <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                                <span className="text-3xl font-light">+</span> Agregar Comprobante de Compras
-                            </h1>
-                        </div>
-
-                        <VoucherForm mode="create" />
+            <div className="flex flex-col gap-6 p-6">
+                {/* Header */}
+                <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-emerald-500 rounded-lg text-white shadow-sm">
+                        <FilePlus2 className="h-5 w-5" />
                     </div>
+                    <div>
+                        <h1 className="text-2xl font-bold text-foreground">
+                            Nuevo Comprobante de Compra
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Completa la información para crear un nuevo comprobante
+                        </p>
+                    </div>
+                </div>
+
+                {/* Form */}
+                <div className="bg-card rounded-xl border p-6 shadow-sm">
+                    <VoucherForm mode="create" />
                 </div>
             </div>
         </AppLayout>

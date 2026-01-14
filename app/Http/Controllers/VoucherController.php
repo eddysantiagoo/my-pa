@@ -47,19 +47,15 @@ class VoucherController extends Controller
             'notes' => 'nullable|string',
             // Add other validations
         ]);
-        
-        // Map frontend fields to DB fields if names differ
-        // e.g. date might map to created_at or a specific date field? 
-        // Schema has created_at, updated_at. If user picks a date, we might override created_at or need a `date` field.
-        // The schema requested "created_at" mapped to "Creación", so we'll use standard timestamps.
-        // However, if the user explicitly inputs a date, we should probably respect it or add a specific date field.
-        // Re-checking requirements: "Fields (Mapped Directly)... created_at". 
-        // But the form has "Fecha *". 
-        // I will adhere to use `created_at` for now effectively, or add a `date` column if strictly needed.
-        // User said: "date *" in form. I'll stick to schema for now (no extra fields), so maybe I save it in `created_at` or `notes`?
-        // Actually, "Fields: ... created_at". I will assume `created_at` acts as the document date.
 
-        $validated['company_id'] = auth()->user()->company_id ?? 1; // Fallback or strict
+        // Map campo `date` del formulario a la columna `created_at` de la tabla,
+        // ya que el esquema de `vouchers` no tiene una columna `date`.
+        if (isset($validated['date'])) {
+            $validated['created_at'] = $validated['date'];
+            unset($validated['date']);
+        }
+
+        $validated['company_id'] = auth()->user()->company_id ?? 1; // Fallback o estricto
         $validated['user_created_json'] = auth()->user();
 
         $voucher = $this->voucherService->createVoucher($validated);
