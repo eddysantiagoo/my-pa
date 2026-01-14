@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ShoppingCart, Truck, Users } from 'lucide-react';
+import { BookOpen, Folder, Landmark, LayoutGrid, ShoppingCart, Truck, Users } from 'lucide-react';
 
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,7 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { contacts, dashboard } from '@/routes';
+import { banks, contacts, dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 
 import AppLogo from './app-logo';
@@ -23,6 +23,22 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Bancos',
+        icon: Landmark,
+        items: [
+            {
+                title: 'Cuentas',
+                href: banks.index(),
+                icon: Landmark,
+            },
+            {
+                title: 'Nuevo banco',
+                href: banks.create(),
+                icon: Landmark,
+            },
+        ],
     },
     {
         title: 'Contactos',

@@ -14,9 +14,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::resource('banks', \App\Http\Controllers\BankAccountController::class);
+    Route::get('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'index'])->name('banks.transactions.index');
+    Route::post('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'store'])->name('banks.transactions.store');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/contacts.php';
-require __DIR__.'/inventory.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/contacts.php';
+require __DIR__ . '/inventory.php';
 
