@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Users } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ShoppingCart, Truck, Users } from 'lucide-react';
 
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -26,8 +26,24 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Contactos',
-        href: contacts(),
         icon: Users,
+        items: [
+            {
+                title: 'Todos los contactos',
+                href: contacts(),
+                icon: Users,
+            },
+            {
+                title: 'Solo clientes',
+                href: contacts({ query: { type: 'customer' } }),
+                icon: ShoppingCart,
+            },
+            {
+                title: 'Solo proveedores',
+                href: contacts({ query: { type: 'supplier' } }),
+                icon: Truck,
+            },
+        ],
     },
 ];
 
