@@ -18,6 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('banks', \App\Http\Controllers\BankAccountController::class);
     Route::get('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'index'])->name('banks.transactions.index');
     Route::post('banks/{bank}/transactions', [\App\Http\Controllers\BankTransactionController::class, 'store'])->name('banks.transactions.store');
+
+    Route::resource('vouchers', \App\Http\Controllers\VoucherController::class);
 });
 
 require __DIR__ . '/settings.php';

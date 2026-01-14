@@ -1,8 +1,11 @@
-import AppLayout from '@/layouts/app-layout';
 import { Head, Link } from '@inertiajs/react';
-import { ProductForm } from './Components/ProductForm';
-import { Brand, Category, Tag } from '@/types/product';
+
+import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/products';
+import { Brand, Category, Tag } from '@/types/product';
+
+import { ProductForm } from './Components/ProductForm';
+
 
 interface Props {
     brands: Brand[];

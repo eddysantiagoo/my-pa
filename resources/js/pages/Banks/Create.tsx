@@ -1,15 +1,16 @@
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import BankForm from './bank-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building2 } from 'lucide-react';
-import { banks } from '@/routes';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+
+import BankForm from './bank-form';
 
 export default function BankCreate() {
     return (
         <AppLayout breadcrumbs={[
-            { title: 'Bancos', href: banks.index().url },
-            { title: 'Nuevo Banco', href: banks.create().url }
+            { title: 'Bancos', href: '/banks' },
+            { title: 'Nuevo Banco', href: '/banks/create' }
         ]}>
             <Head title="Nuevo Banco" />
 

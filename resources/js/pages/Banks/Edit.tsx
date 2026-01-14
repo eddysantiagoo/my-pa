@@ -1,9 +1,10 @@
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import BankForm from './bank-form';
-import { Card, CardContent } from '@/components/ui/card';
 import { Building2 } from 'lucide-react';
-import { banks } from '@/routes';
+
+import { Card, CardContent } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+
+import BankForm from './bank-form';
 
 interface Props {
     bank: any;
@@ -12,7 +13,7 @@ interface Props {
 export default function BankEdit({ bank }: Props) {
     return (
         <AppLayout breadcrumbs={[
-            { title: 'Bancos', href: banks.index().url },
+            { title: 'Bancos', href: '/banks' },
             { title: 'Modificar Banco', href: '#' }
         ]}>
             <Head title="Modificar Banco" />

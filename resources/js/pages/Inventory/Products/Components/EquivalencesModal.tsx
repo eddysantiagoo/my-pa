@@ -1,3 +1,7 @@
+import { useForm } from "@inertiajs/react";
+import { Plus, X } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -9,9 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Product } from "@/types/product";
-import { useForm } from "@inertiajs/react";
-import { useState } from "react";
-import { Plus, X } from "lucide-react";
+
 
 interface EquivalencesModalProps {
     product: Product | null;

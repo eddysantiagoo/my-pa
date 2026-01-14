@@ -1,5 +1,8 @@
-import { useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -7,10 +10,8 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PriceList } from '@/types/price-list';
 
@@ -54,14 +55,14 @@ export function PriceListForm({ open, onClose, priceList }: PriceListFormProps) 
         e.preventDefault();
 
         if (priceList) {
-            put(route('price-lists.update', priceList.id), {
+            put(`/inventory/price-lists/${priceList.id}`, {
                 onSuccess: () => {
                     reset();
                     onClose();
                 },
             });
         } else {
-            post(route('price-lists.store'), {
+            post('/inventory/price-lists', {
                 onSuccess: () => {
                     reset();
                     onClose();

@@ -1,3 +1,7 @@
+import { useForm } from "@inertiajs/react";
+import { Image, X } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -8,9 +12,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Product } from "@/types/product";
-import { useForm } from "@inertiajs/react";
-import { Image, X } from "lucide-react";
-import { useState } from "react";
 
 interface ImagesModalProps {
     product: Product | null;

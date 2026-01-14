@@ -1,9 +1,12 @@
 import { Head, useForm, Link } from '@inertiajs/react'; // Link added
+import { format } from 'date-fns';
+import { CalendarIcon, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
     Select,
     SelectContent,
@@ -11,12 +14,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from '@/components/ui/textarea';
-import { CalendarIcon, Save } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { Product } from '@/types/product';
 import { Warehouse } from '@/types/warehouse';
-import { format } from 'date-fns';
+
 
 interface AdjustmentCreateProps {
     products: Product[]; // Note: These products contain 'stock' global sum. Real stock depends on warehouse.
@@ -56,7 +58,7 @@ export default function AdjustmentCreate({ products, warehouses }: AdjustmentCre
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('adjustments.store'));
+        post('/inventory/adjustments');
     };
 
     return (
@@ -188,7 +190,7 @@ export default function AdjustmentCreate({ products, warehouses }: AdjustmentCre
 
                     <div className="col-span-1 md:col-span-2 flex justify-end gap-3 mt-4">
                         <Button variant="outline" type="button" asChild>
-                            <Link href={route('adjustments.index')}>Cancelar</Link>
+                            <Link href="/inventory/adjustments">Cancelar</Link>
                         </Button>
                         <Button type="submit" disabled={processing} className="min-w-[120px]">
                             {processing ? 'Guardando...' : 'Guardar'}

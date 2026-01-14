@@ -1,6 +1,8 @@
 import { Head, router } from '@inertiajs/react';
+import { Plus, Pencil, Trash2, Tag } from 'lucide-react';
 import { useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -10,11 +12,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Plus, Pencil, Trash2, Tag } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { PriceList } from '@/types/price-list';
 import { PageProps } from '@/types/warehouse'; // Resuse PageProps or generic
+
 import { PriceListForm } from './Components/PriceListForm';
-import { Badge } from '@/components/ui/badge';
+
 
 interface PriceListPageProps {
     priceLists: PriceList[];
@@ -40,7 +43,7 @@ export default function PriceListIndex({ priceLists }: PriceListPageProps) {
             return;
         }
         if (confirm(`¿Estás seguro de eliminar la lista ${priceList.name}?`)) {
-            router.delete(route('price-lists.destroy', priceList.id));
+            router.delete(`/inventory/price-lists/${priceList.id}`);
         }
     };
 

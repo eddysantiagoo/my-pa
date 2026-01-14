@@ -1,6 +1,8 @@
 import { Head, router } from '@inertiajs/react';
+import { Plus, Pencil, Trash2, Warehouse as WarehouseIcon } from 'lucide-react';
 import { useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
+
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -10,10 +12,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Plus, Pencil, Trash2, Warehouse as WarehouseIcon } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 import { Warehouse, PageProps } from '@/types/warehouse';
+
 import { WarehouseForm } from './Components/WarehouseForm';
-import { Badge } from '@/components/ui/badge';
+
 
 export default function WarehouseIndex({ warehouses }: PageProps<Warehouse>) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +38,7 @@ export default function WarehouseIndex({ warehouses }: PageProps<Warehouse>) {
             return;
         }
         if (confirm(`¿Estás seguro de eliminar la bodega ${warehouse.name}?`)) {
-            router.delete(route('warehouses.destroy', warehouse.id));
+            router.delete(`/inventory/warehouses/${warehouse.id}`);
         }
     };
 

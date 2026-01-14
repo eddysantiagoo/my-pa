@@ -1,3 +1,8 @@
+import { router } from '@inertiajs/react';
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from '@/components/ui/button';
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Table,
     TableBody,
@@ -6,14 +11,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { Button } from '@/components/ui/button';
-import { Product } from '@/types/product';
-import { ProductActionsDropdown } from './ProductActionsDropdown';
-import { router } from '@inertiajs/react';
 import { show } from '@/routes/products';
+import { Product } from '@/types/product';
 import { formatCurrency, formatNumber } from '@/utils/format';
+
+import { ProductActionsDropdown } from './ProductActionsDropdown';
 
 interface ProductTableProps {
     products: Product[];
