@@ -2,6 +2,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     ChevronDown,
     ChevronUp,
+    Eye,
+    Pencil,
     Plus,
     Search,
     Users,
@@ -209,14 +211,14 @@ export default function ContactsIndex({
                                 <TableHead>Tipo Empresa</TableHead>
                                 <TableHead>Tipo Contacto</TableHead>
                                 <TableHead>Vendedor</TableHead>
+                                <TableHead className="text-right">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {contacts.data.map((contact: Contact) => (
                                 <TableRow
                                     key={contact.id}
-                                    className="cursor-pointer hover:bg-muted/50"
-                                    onClick={() => router.get(`/contacts/${contact.id}/edit`)}
+                                    className="hover:bg-muted/50"
                                 >
                                     <TableCell className="font-medium">{contact.name}</TableCell>
                                     <TableCell>
@@ -235,11 +237,37 @@ export default function ContactsIndex({
                                                     : '-'}
                                     </TableCell>
                                     <TableCell>{contact.seller?.name ?? '-'}</TableCell>
+                                    <TableCell className="text-right">
+                                        <div className="flex justify-end gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    router.get(`/contacts/${contact.id}`);
+                                                }}
+                                                title="Ver contacto"
+                                            >
+                                                <Eye className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    router.get(`/contacts/${contact.id}/edit`);
+                                                }}
+                                                title="Editar contacto"
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                             {contacts.data.length === 0 && (
                                 <TableRow>
-                                    <TableCell colSpan={7} className="h-24 text-center">
+                                    <TableCell colSpan={8} className="h-24 text-center">
                                         No se encontraron contactos.
                                     </TableCell>
                                 </TableRow>
